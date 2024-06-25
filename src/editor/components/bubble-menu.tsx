@@ -151,16 +151,11 @@ export let BubbleMenu: FC<BubbleMenuProps> = (props) => {
                 size: "default",
               }),
               {
-                "khld-bg-accent": item.isActive(),
+                "khld-bg-muted": item.isActive(),
               }
             )}
           >
-            <item.icon
-              size={24}
-              className={cn("khld-h-6 khld-w-6", {
-                "khld-text-blue-500": item.isActive(),
-              })}
-            />
+            <item.icon size={24} className={cn("khld-h-6 khld-w-6")} />
           </button>
         ))}
       </div>
