@@ -195,8 +195,27 @@ function createExtension(options?: CodeworksOptions) {
                 event.stopPropagation();
 
                 let dataTransfer = event.dataTransfer;
-                console.log("DataTransfer items:", dataTransfer?.items);
-                console.log("DataTransfer files:", dataTransfer?.files);
+                if (!dataTransfer) {
+                  return false;
+                }
+
+                // Handle files from a disk
+                let files = Array.from(dataTransfer.files).filter((file) =>
+                  /image/i.test(file.type)
+                );
+                if (files.length) {
+                  handleFiles(view, files);
+                  return false;
+                }
+
+                // Handle images from a URL
+                let imageURL = dataTransfer.getData("url");
+                if (imageURL) {
+                  insertImage(view, imageURL);
+                  return false;
+                }
+
+                return false;
               },
               paste(view, event) {
                 event.stopPropagation();
