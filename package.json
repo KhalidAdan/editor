@@ -1,4 +1,8 @@
 {
+  "author": {
+    "name": "CodeWorks",
+    "email": "admin@codeworks.so"
+  },
   "name": "codeworks-editor",
   "description": "A simple text editor made with tiptap",
   "type": "module",
