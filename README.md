@@ -6,7 +6,7 @@ To run the editor locally, run `npm run dev` and open `http://localhost:5173` in
 
 ## Building
 
-To build the editor, run `npm run build`. The starting point for the build is `src\editor\index.tsx`, and can be configured by modifying the `vite.config.ts` file.
+To build the editor, run `npm run build`. The entry point for the build is `src\editor\index.tsx`, and can be configured by modifying the `vite.config.ts` file.
 
 ## Publishing
 
