@@ -26,7 +26,7 @@ type ReducerAction = {
   title?: string;
 };
 
-export let PalaborImageNodeView = (props: ComponentProps) => {
+export let CodeworksImageNodeView = (props: ComponentProps) => {
   let { id, src, alt, title } = props.node.attrs;
 
   let [state, dispatch] = useReducer<

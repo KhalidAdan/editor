@@ -8,14 +8,14 @@ import {
   SlashCommand,
   getSlashCommandSuggestions,
 } from "../components/slash-command";
-import PalaborImage from "../nodes/palabor-image";
+import CodeworksImage from "../nodes/codeworks-image";
 import { SoundCloud } from "../nodes/soundcloud";
 
-export let DEFAULT_BUBBLE_MENU_ITEMS = [
+export let DEFAULT_EXTENSIONS = [
   StarterKit,
   Typography,
-  PalaborImage.configure({
-    inline: false,
+  CodeworksImage.configure({
+    inline: true,
     allowBase64: true,
     HTMLAttributes: {
       class: "khld-w-full khld-h-auto",

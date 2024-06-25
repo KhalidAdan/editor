@@ -3,7 +3,7 @@ import { mergeAttributes } from "@tiptap/react";
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
-    PalaborHighlight: {
+    CodeworksHighlight: {
       // Create a comment highlight mark
       setHighlight: (attributes: {
         color?: string;
@@ -22,20 +22,20 @@ declare module "@tiptap/core" {
   }
 }
 
-type PalaborHighlightOptions = {
+type CodeworksHighlightOptions = {
   HTMLAttributes: Record<string, unknown>;
 };
 
-type PalaborHighlightStorage = {
+type CodeworksHighlightStorage = {
   currentCommentId: string | null;
   activeCommentId: string | null;
 };
 
-let PalaborHighlight = Mark.create<
-  PalaborHighlightOptions,
-  PalaborHighlightStorage
+let CodeworksHighlight = Mark.create<
+  CodeworksHighlightOptions,
+  CodeworksHighlightStorage
 >({
-  name: "palabor-highlight",
+  name: "Codeworks-highlight",
   addOptions() {
     return {
       HTMLAttributes: {},
@@ -122,7 +122,7 @@ let PalaborHighlight = Mark.create<
       }
 
       if (targetIsCurrentMark) {
-        this.editor.storage["palabor-highlight"].activeCommentId = commentId;
+        this.editor.storage["Codeworks-highlight"].activeCommentId = commentId;
         return;
       }
     };
@@ -137,7 +137,7 @@ let PalaborHighlight = Mark.create<
       }
 
       //highlightEvent(null);
-      this.editor.storage["palabor-highlight"].activeCommentId = null;
+      this.editor.storage["Codeworks-highlight"].activeCommentId = null;
     };
 
     let handleClick = () => {
@@ -158,4 +158,4 @@ let PalaborHighlight = Mark.create<
   },
 });
 
-export default PalaborHighlight;
+export default CodeworksHighlight;

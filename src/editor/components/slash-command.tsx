@@ -3,14 +3,7 @@ import { cn } from "@/lib/utils";
 import { Editor, Extension, Range } from "@tiptap/core";
 import { ReactRenderer } from "@tiptap/react";
 import Suggestion, { SuggestionOptions } from "@tiptap/suggestion";
-import {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import { ReactNode, useCallback, useRef, useState } from "react";
 import tippy, { GetReferenceClientRect } from "tippy.js";
 
 export interface CommandProps {
@@ -196,45 +189,45 @@ let CommandList = ({
     [command, editor, items]
   );
 
-  useEffect(() => {
-    let navigationKeys = ["ArrowUp", "ArrowDown", "Enter"];
-    let onKeyDown = (e: KeyboardEvent) => {
-      if (navigationKeys.includes(e.key)) {
-        e.preventDefault();
-        if (e.key === "ArrowUp") {
-          setSelectedIndex((selectedIndex + items.length - 1) % items.length);
-          return true;
-        }
-        if (e.key === "ArrowDown") {
-          setSelectedIndex((selectedIndex + 1) % items.length);
-          return true;
-        }
-        if (e.key === "Enter") {
-          selectItem(selectedIndex);
-          return true;
-        }
-        return false;
-      }
-    };
-    document.addEventListener("keydown", onKeyDown, true);
-    return () => {
-      document.removeEventListener("keydown", onKeyDown, true);
-    };
-  }, [items, selectedIndex, setSelectedIndex, selectItem]);
+  // useEffect(() => {
+  //   let navigationKeys = ["ArrowUp", "ArrowDown", "Enter"];
+  //   let onKeyDown = (e: KeyboardEvent) => {
+  //     if (navigationKeys.includes(e.key)) {
+  //       e.preventDefault();
+  //       if (e.key === "ArrowUp") {
+  //         setSelectedIndex((selectedIndex + items.length - 1) % items.length);
+  //         return true;
+  //       }
+  //       if (e.key === "ArrowDown") {
+  //         setSelectedIndex((selectedIndex + 1) % items.length);
+  //         return true;
+  //       }
+  //       if (e.key === "Enter") {
+  //         selectItem(selectedIndex);
+  //         return true;
+  //       }
+  //       return false;
+  //     }
+  //   };
+  //   document.addEventListener("keydown", onKeyDown, true);
+  //   return () => {
+  //     document.removeEventListener("keydown", onKeyDown, true);
+  //   };
+  // }, [items, selectedIndex, setSelectedIndex, selectItem]);
 
-  useEffect(() => {
-    setSelectedIndex(0);
-  }, [items]);
+  // useEffect(() => {
+  //   setSelectedIndex(0);
+  // }, [items]);
 
   let commandListContainer = useRef<HTMLDivElement>(null);
 
-  useLayoutEffect(() => {
-    let container = commandListContainer?.current;
+  // useLayoutEffect(() => {
+  //   let container = commandListContainer?.current;
 
-    let item = container?.children[selectedIndex] as HTMLElement;
+  //   let item = container?.children[selectedIndex] as HTMLElement;
 
-    if (item && container) updateScrollView(container, item);
-  }, [selectedIndex]);
+  //   if (item && container) updateScrollView(container, item);
+  // }, [selectedIndex]);
 
   return items.length > 0 ? (
     <div className="khld-shadow">

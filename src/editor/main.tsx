@@ -2,7 +2,7 @@ import { Extension, FocusPosition } from "@tiptap/core";
 import { EditorProps as TiptapEditorProps } from "@tiptap/pm/view";
 import { EditorContent, EditorEvents, useEditor } from "@tiptap/react";
 import { BubbleMenu } from "./components/bubble-menu";
-import { DEFAULT_BUBBLE_MENU_ITEMS } from "./extensions";
+import { DEFAULT_EXTENSIONS } from "./extensions";
 
 export type EditorProps = {
   extensions?: Extension[];
@@ -28,7 +28,7 @@ export function CodeworksEditor(props: EditorProps) {
   };
 
   let editor = useEditor({
-    extensions: [...DEFAULT_BUBBLE_MENU_ITEMS, ...(extensions ?? [])],
+    extensions: [...DEFAULT_EXTENSIONS, ...(extensions ?? [])],
     content: formattedContent,
     autofocus,
     editorProps,

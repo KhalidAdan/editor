@@ -1,4 +1,3 @@
-import { PalaborImageNodeView } from "@/editor/components/palabor-image";
 import { Image } from "@tiptap/extension-image";
 import { PluginKey } from "@tiptap/pm/state";
 import { EditorView } from "@tiptap/pm/view";
@@ -9,8 +8,9 @@ import {
 } from "@tiptap/react";
 import { Plugin } from "prosemirror-state";
 import { v4 as uuidv4 } from "uuid";
+import { CodeworksImageNodeView } from "../components/codeworks-image";
 
-export interface PalaborImageOptions {
+export interface CodeworksOptions {
   inline: boolean;
   allowFileUploads: boolean;
   allowBase64: boolean;
@@ -20,30 +20,57 @@ export interface PalaborImageOptions {
 }
 
 export let insertImage = (view: EditorView, imageUrl: string) => {
-  let { schema } = view.state;
-  let pImageNode = schema.nodes["palabor-image"].create({
+  let { state } = view;
+  let { schema, selection, tr } = state;
+  let { from, to } = selection;
+
+  let imageNode = schema.nodes["codeworks-image"].create({
     src: imageUrl,
+    id: uuidv4(),
   });
-  let transaction = view.state.tr.replaceSelectionWith(pImageNode);
+
+  let transaction;
+
+  if (from === to) {
+    transaction = tr.insert(from, imageNode);
+  } else {
+    transaction = tr.replaceWith(from, to, imageNode);
+  }
+
   view.dispatch(transaction);
   view.focus();
 };
 
-function createExtension(options?: PalaborImageOptions) {
-  return Image.extend<PalaborImageOptions>({
-    name: "palabor-image",
+function createExtension(options?: CodeworksOptions) {
+  return Image.extend<CodeworksOptions>({
+    name: "codeworks-image",
     draggable: true,
     addOptions() {
       return {
-        ...options,
         inline: false,
         allowFileUploads: true,
         allowBase64: true,
         HTMLAttributes: {},
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        handleFiles: async (_view: EditorView, _files: File[]) => {},
+        handleFiles: async (view: EditorView, files: File[]) => {
+          console.log("handleFiles called with files:", files);
+          for (const file of files) {
+            console.log("Processing file:", file.name);
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              console.log("File read successfully");
+              const src = e.target?.result as string;
+              console.log("Inserting image with src:", src);
+              insertImage(view, src);
+            };
+            reader.onerror = (e) => {
+              console.error("Error reading file:", e);
+            };
+            reader.readAsDataURL(file);
+          }
+        },
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         handleImageUrls: async (_view: EditorView, _urls: string[]) => {},
+        ...(options || {}),
       };
     },
     addAttributes() {
@@ -152,7 +179,7 @@ function createExtension(options?: PalaborImageOptions) {
       ];
     },
     addNodeView() {
-      return ReactNodeViewRenderer(PalaborImageNodeView);
+      return ReactNodeViewRenderer(CodeworksImageNodeView);
     },
     addProseMirrorPlugins() {
       let handleFiles = this.options.handleFiles;
@@ -162,21 +189,14 @@ function createExtension(options?: PalaborImageOptions) {
           key: new PluginKey("imageDropPastePlugin"),
           props: {
             handleDOMEvents: {
-              drop(view, event) {
+              drop(view, event: DragEvent) {
+                console.log("Drop event:");
                 event.preventDefault();
                 event.stopPropagation();
+
                 let dataTransfer = event.dataTransfer;
-                if (!dataTransfer?.files.length) {
-                  return;
-                }
-
-                let files = Array.from(dataTransfer.files).filter((file) =>
-                  /image/i.test(file.type)
-                );
-
-                handleFiles(view, files);
-
-                return false;
+                console.log("DataTransfer items:", dataTransfer?.items);
+                console.log("DataTransfer files:", dataTransfer?.files);
               },
               paste(view, event) {
                 event.stopPropagation();
@@ -228,5 +248,5 @@ function createExtension(options?: PalaborImageOptions) {
   });
 }
 
-let PalaborImage = createExtension();
-export default PalaborImage;
+let CodeworksImage = createExtension();
+export default CodeworksImage;
